@@ -4,6 +4,8 @@ import Button from "../../shared/FormElements/Button";
 import Modal from "../../shared/UIElements/Modal";
 import Map from "../../shared/UIElements/Map";
 import { AuthContext } from "../../shared/Context/auth-context";
+import { useHttpClient } from "../../shared/hooks/http-hook";
+
 
 import './PlaceItem.css';
 
@@ -12,6 +14,8 @@ const PlaceItem = props => {
     const auth = useContext(AuthContext);
     const [showMap, setShowMap] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const {isLoading, error, sendRequest, clearError } =  useHttpClient();
+
 
     const openMapHandler = () => setShowMap(true);
     const closeMapHandler = () => setShowMap(false);
@@ -22,9 +26,9 @@ const PlaceItem = props => {
     const cancelDeleteHandler = () => {
         setShowConfirmModal(false);
     };
-    const confirmDeleteHandler = () => {
+    const confirmDeleteHandler = async () => {
         setShowConfirmModal(false)
-        console.log('DELETEING....')
+        
     };
 
     return (
