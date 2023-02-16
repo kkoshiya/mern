@@ -5,7 +5,9 @@ import Modal from "../../shared/UIElements/Modal";
 import Map from "../../shared/UIElements/Map";
 import { AuthContext } from "../../shared/Context/auth-context";
 import { useHttpClient } from "../../shared/hooks/http-hook";
-
+import { useParams, useHistory } from 'react-router-dom'
+import ErrorModal from "../../shared/UIElements/ErrorModal";
+import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
 
 import './PlaceItem.css';
 
@@ -28,11 +30,15 @@ const PlaceItem = props => {
     };
     const confirmDeleteHandler = async () => {
         setShowConfirmModal(false)
-        
+        try {
+            await sendRequest(`http://localhost:1000/api/places/${props.id}`, 'DELETE');
+            props.onDelete(props.id);
+        } catch(err) {console.log(err)}
     };
 
     return (
         <React.Fragment>
+            <ErrorModal error={error} onClear={clearError}/>
 
             <Modal 
                 show={showMap} onCancel={closeMapHandler} header={props.address} contentClass='place-item__modal-content'
@@ -60,6 +66,7 @@ const PlaceItem = props => {
 
             <li className="place-item">
                 <Card className='place-item__content'>
+                    {isLoading && <LoadingSpinner asOverlay/>}
                     <div className="place-item__image">
                         <img src={props.image} alt={props.title} />
                     </div>
@@ -69,10 +76,10 @@ const PlaceItem = props => {
                         <p>{props.description}</p>
                     </div>
                     <div className="place-item__actions">
-                        {auth.isLoggedIn && 
+                        {auth.userId === props.creatorId && 
                             <Button to={`/places/${props.id}`}>Edit</Button>
                         }
-                        {auth.isLoggedIn &&
+                        {auth.userId === props.creatorId && 
                             <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>
                         }
                         <Button inverse onClick={openMapHandler}>View on Map</Button>
