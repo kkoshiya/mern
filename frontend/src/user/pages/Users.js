@@ -14,7 +14,11 @@ const Users = () => {
     useEffect(() => {
         const fetchUsers = async() => {
             try {
-                const responseData = await sendRequest('http://localhost:1000/api/users');
+                const responseData = await sendRequest(`${process.env.REACT_APP_BACKEND_URL}/users`);
+                console.log('hitting');
+                console.log(`${process.env.REACT_APP_BACKEND_URL}/users`)
+                //const responseData = await sendRequest('http://localhost:1000/api/users');
+
                 setLoadedUsers(responseData.users);
             } catch(err) {};
         };

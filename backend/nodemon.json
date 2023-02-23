@@ -1,0 +1,9 @@
+{
+    "env" : {
+        "DB_USER": "kyle",
+        "DB_PASSWORD": "pokemon",
+        "DB_NAME": "mern",
+        "GOOGLE_API_KEY": "AIzaSyCZGcLR50xNLsmm7DQiu8M4CPD85kQZTPM",
+        "JWT_KEY": "supersecret_dont_share"
+    }
+}
